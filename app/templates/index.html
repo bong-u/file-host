@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@latest/css/pico.min.css">
+    <script>
+		const copyToClipboard = (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Copied to clipboard: " + text);
+            }).catch(err => {
+                alert("Failed to copy: " + err);
+            });
+        }
+    </script>
+</head>
+<body>
+    <main class="container">
+        <h1>File Upload</h1>
+
+        <!-- 파일 업로드 폼 -->
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" id="file" name="file" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        <!-- 다운로드 명령어 표시 -->
+        {% if file_name != "" %}
+        <section>
+            <h2>Download Commands</h2>
+            <article>
+                <p><strong>Wget Command:</strong></p>
+                <div style="display: flex; align-items: center;">
+					<pre><code id="wget-command">wget {{ base_url }}{{ file_name }}</code></pre>
+					<button onclick="copyToClipboard('wget {{ base_url }}{{ file_name }}')">Copy</button>
+                </div>
+            </article>
+            <article>
+                <p><strong>Curl Command:</strong></p>
+                <div style="display: flex; align-items: center;">
+                    <pre><code id="curl-command">curl -O {{ base_url }}{{ file_name }}</code></pre>
+					<button onclick="copyToClipboard('curl -O {{ base_url }}{{ file_name }}')">Copy</button>
+                </div>
+            </article>
+        </section>
+        {% endif %}
+    </main>
+</body>
+</html>
+
